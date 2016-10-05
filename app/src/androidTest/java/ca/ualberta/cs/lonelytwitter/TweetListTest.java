@@ -7,6 +7,13 @@ import java.util.List;
 
 /**
  * Created by ehsueh on 9/27/16.
+ * This unit tests tests 6 methods
+ * Add Tweeetttt
+ * has tweet
+ * get tweet
+ * remove tweet
+ * test count
+ * get count
  */
 public class TweetListTest extends ActivityInstrumentationTestCase2<LonelyTwitterActivity> {
     public TweetListTest(){
