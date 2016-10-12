@@ -19,11 +19,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,11 +52,15 @@ import com.google.gson.reflect.TypeToken;
 public class LonelyTwitterActivity extends Activity {
 
 
+
+
     /**
      * This is the file name that is being saved/loaded and contains all the tweets
      * @see #loadFromFile()
      * @see #saveInFile()
      */
+    private Activity activity = this;
+
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
@@ -62,6 +69,10 @@ public class LonelyTwitterActivity extends Activity {
 
 	private ArrayAdapter<Tweet> adapter;
 
+
+    public ListView getOldTweetsList(){
+        return oldTweetsList;
+    }
 	/** Called when the activity is first created.
 	 * It initializes the two buttons the (Save button and the Clear button)
 	 * the clear button deletes all of the
@@ -108,6 +119,19 @@ public class LonelyTwitterActivity extends Activity {
                 saveInFile();
 
             }
+        });
+
+        oldTweetsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(activity, EditTweetActivity.class);
+                Tweet tweet = (Tweet) oldTweetsList.getItemAtPosition(position);
+
+                String message = tweet.getMessage();
+                intent.putExtra("tweet",message);
+                startActivity(intent);
+            }
+
         });
 	}
 
