@@ -58,10 +58,11 @@ public class LonelyTwitterActivity extends Activity {
 				String text = bodyText.getText().toString();
 				NormalTweet newTweet = new NormalTweet(text);
 				tweetList.add(newTweet);
-				adapter.notifyDataSetChanged();
+
 				// saveInFile(); // TODO replace this with elastic search
 				ElasticsearchTweetController.AddTweetsTask addTweetsTask = new ElasticsearchTweetController.AddTweetsTask();
 				addTweetsTask.execute(newTweet);
+				adapter.notifyDataSetChanged();
 			}
 		});
 
@@ -70,7 +71,19 @@ public class LonelyTwitterActivity extends Activity {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				tweetList.clear();
-				deleteFile(FILENAME);  // TODO deprecate this button
+				//deleteFile(FILENAME);  // TODO deprecate this button
+				String text = bodyText.getText().toString();
+
+
+				//where do i pass in my string?
+				ElasticsearchTweetController.SearchTweetsTask searchTweetsTask = new ElasticsearchTweetController.SearchTweetsTask();
+				searchTweetsTask.execute(text);
+				try{
+					tweetList = searchTweetsTask.get();
+				}
+				catch (Exception e){
+					Log.i("Error", "Failed to get the tweets out of the async object.");
+				}
 				adapter.notifyDataSetChanged();
 			}
 		});
